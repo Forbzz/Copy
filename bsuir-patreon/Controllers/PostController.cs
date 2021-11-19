@@ -28,12 +28,13 @@ namespace Patreon.Controllers
         {
             return await _postRepository.GetAll();
         }
-
+            
         // GET: api/Post/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Post>> GetPost(int id)
         {
-            var post = await _postRepository.FindById(id);
+            var post1 = await _postRepository.FindById(id);
+            var post = await _postRepository.GetPostWithData(id);
 
             if (post == null)
             {
@@ -79,6 +80,14 @@ namespace Patreon.Controllers
             }
             await _postRepository.Delete(post);
 
+            return NoContent();
+        }
+
+        //api/Post/addlike
+        [HttpPost("addlike{postId}&{userId}")]
+        public async Task<IActionResult> AddLike(int postId, string userId = null)
+        {
+            await _postRepository.AddLike(postId, userId);
             return NoContent();
         }
 
